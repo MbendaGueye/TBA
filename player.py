@@ -22,22 +22,29 @@ class Player:
         'Forest'
     """
 
-    # Define the constructor.
+
+    DIRECTIONS = {
+        "N": "N", "NORD": "N",
+        "E": "E", "EST": "E",
+        "S": "S", "SUD": "S",
+        "O": "O", "OUEST": "O",
+        "U": "U", "UP": "U",
+        "D": "D", "DOWN": "D"
+    }
+
     def __init__(self, name):
         self.name = name
         self.current_room = None
 
-    # Define the move method.
     def move(self, direction):
-        # Get the next room from the exits dictionary of the current room.
-        next_room = self.current_room.exits.get(direction)
-
-        # If the next room is None, print an error message and return False.
-        if next_room is None:
+        normalized_direction = self.DIRECTIONS.get(direction.upper())
+        if not normalized_direction:
+            print(f"\n'{direction}' n'est pas une direction valide.\n")
+            return False
+        next_room = self.current_room.exits.get(normalized_direction)
+        if not next_room:
             print("\nAucune porte dans cette direction !\n")
             return False
-
-        # Set the current room to the next room.
         self.current_room = next_room
         print(self.current_room.get_long_description())
         return True
