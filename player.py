@@ -1,27 +1,10 @@
-# Define the Player class.
+from room import Room
+
+
 class Player:
     """
-    This class represents the player in the game.
-
-    Attributes:
-        name (str): The name of the player.
-        current_room (Room): The room where the player is currently located.
-
-    Methods:
-        __init__(self, name):
-            Initializes the Player instance with a name and sets the current room to None.
-        move(self, direction):
-            Moves the player to the room in the specified direction if possible.
-
-    Example:
-        >>> player = Player("Alex")
-        >>> player.name
-        'Alex'
-        >>> player.current_room = Room("Forest", "a lush forest.")
-        >>> player.current_room.name
-        'Forest'
+    Represents the player in the game.
     """
-
 
     DIRECTIONS = {
         "N": "N", "NORD": "N",
@@ -32,11 +15,15 @@ class Player:
         "D": "D", "DOWN": "D"
     }
 
-    def __init__(self, name):
-        self.name = name
-        self.current_room = None
+    def __init__(self, name: str):
+        self.name: str = name
+        self.current_room: Room | None = None
+        self.history: list[Room] = []
 
-    def move(self, direction):
+    def move(self, direction: str) -> bool:
+        """
+        Moves the player to a new room if possible.
+        """
         normalized_direction = self.DIRECTIONS.get(direction.upper())
         if not normalized_direction:
             print(f"\n'{direction}' n'est pas une direction valide.\n")
@@ -45,6 +32,17 @@ class Player:
         if not next_room:
             print("\nAucune porte dans cette direction !\n")
             return False
+
+        self.history.append(self.current_room)
         self.current_room = next_room
         print(self.current_room.get_long_description())
         return True
+
+    def get_history(self) -> str:
+        """
+        Returns the player's movement history.
+        """
+        if not self.history:
+            return "\nAucun lieu visité pour l'instant.\n"
+        history_descriptions = [f"- {room.description}" for room in self.history]
+        return "\nVous avez déjà visité les pièces suivantes :\n" + "\n".join(history_descriptions) + "\n"
