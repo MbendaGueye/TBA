@@ -12,24 +12,20 @@ class Door:
         """
         self.locked = locked
 
-    def unlock(self, key_name):
+    def unlock(self, key_name: str) -> None:
         """
-        Unlocks the door if the correct key is used.
+        Unlocks the door with the correct key.
 
         Args:
             key_name (str): The name of the key used.
-
-        Returns:
-            bool: True if the door was unlocked, False otherwise.
         """
         if key_name == "key":
             self.locked = False
-            print("La porte du donjon est maintenant déverrouillée.")
-            return True
-        print("Vous ne pouvez pas déverrouiller cette porte avec cet objet.")
-        return False
+            print("La porte est maintenant déverrouillée.")
+        else:
+            print("Cette clé ne fonctionne pas ici.")
 
-    def is_locked(self):
+    def is_locked(self) -> bool:
         """
         Checks if the door is locked.
 

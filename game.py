@@ -4,6 +4,8 @@ from command import Command
 from actions import Actions
 from item import Item
 from door import Door
+from beamer import Beamer
+from character import Character
 from typing import List, Dict, Set, Optional
 
 
@@ -18,9 +20,9 @@ class Game:
         self.used_directions: Set[str] = set()
         self.dungeon_door: Door = Door(locked=True)  # Porte verrouillée pour le donjon
 
-
     def setup(self) -> None:
         """Initializes game commands, rooms, items, and doors."""
+        # Adding commands
         self.commands["help"] = Command("help", " : afficher cette aide", Actions.help, 0)
         self.commands["quit"] = Command("quit", " : quitter le jeu", Actions.quit, 0)
         self.commands["go"] = Command("go", " <direction> : se déplacer dans une direction", Actions.go, 1)
@@ -31,6 +33,7 @@ class Game:
         self.commands["drop"] = Command("drop", " <item_name> : déposer un item", Actions.drop, 1)
         self.commands["check"] = Command("check", " : vérifier le contenu de l'inventaire", Actions.check, 0)
         self.commands["use"] = Command("use", " <item_name> : utiliser un objet", Actions.use, 1)
+        self.commands["talk"] = Command("talk", " <character_name> : parler à un personnage", Actions.talk, 1)
 
         # Setup rooms
         forest = Room("Forest", "une forêt enchantée.")
@@ -60,12 +63,33 @@ class Game:
         swamp.exits = {"N": tower, "O": castle}
         sky_room.exits = {"D": tower}
 
+        # Add characters to rooms
+        monster = Character(
+            name="Monstre BOUBOU",
+            description="un monstre effrayant",
+            current_room=castle,
+            synonyms=["monster", "monstre"]
+        )
+
+        princess = Character(
+            name="Princesse Mbenda",
+            description="une princesse en détresse",
+            current_room=dungeon,
+            synonyms=["princess", "princesse"]
+        )
+
+        castle.characters.append(monster)
+        dungeon.characters.append(princess)
+
+        # Store rooms
         self.rooms.extend([forest, tower, cave, cottage, swamp, castle, dungeon, sky_room])
 
         for room in self.rooms:
             self.used_directions.update(room.exits.keys())
+
         print(f"Directions utilisées dans le jeu : {self.used_directions}")
 
+        # Initialize player
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = swamp
 

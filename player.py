@@ -1,10 +1,18 @@
+from base_character import BaseCharacter
 from inventory import Inventory
 from room import Room
-from item import Item  # Import de la classe Item
+from item import Item
+from beamer import Beamer
 
-class Player:
+
+class Player(BaseCharacter):
     """
     Represents the player in the game.
+
+    Attributes:
+        inventory (Inventory): The player's inventory.
+        max_weight (float): The maximum weight the player can carry.
+        history (list[Room]): The history of rooms visited by the player.
     """
 
     DIRECTIONS = {
@@ -22,14 +30,12 @@ class Player:
 
         Args:
             name (str): The name of the player.
+            max_weight (float): The maximum weight the player can carry.
         """
-        self.name: str = name
-        self.current_room: Room | None = None
+        super().__init__(name, "Un aventurier courageux.")
+        self.inventory = Inventory()
+        self.max_weight = max_weight
         self.history: list[Room] = []
-        self.inventory = Inventory()  # Initialize an empty inventory
-        self.max_weight: float = max_weight
-
-
 
     def move(self, direction: str) -> bool:
         """
@@ -50,9 +56,36 @@ class Player:
             print("\nAucune porte dans cette direction !\n")
             return False
 
+        if next_room.door and next_room.door.is_locked():
+            print("\nLa porte vers cette pièce est verrouillée.\n")
+            return False
+
         self.history.append(self.current_room)
         self.current_room = next_room
         print(self.current_room.get_long_description())
+        return True
+
+    def use_beamer(self) -> bool:
+        """
+        Uses a Beamer to teleport the player to the previous room.
+
+        Returns:
+            bool: True if the teleportation was successful, False otherwise.
+        """
+        beamer = next(
+            (item for item in self.inventory.items if isinstance(item, Beamer)),
+            None
+        )
+        if not beamer:
+            print("\nVous n'avez pas de Beamer dans votre inventaire.\n")
+            return False
+
+        if not self.history:
+            print("\nAucune pièce précédente pour utiliser le Beamer.\n")
+            return False
+
+        self.current_room = self.history.pop()
+        print(f"\nVous avez été téléporté à : {self.current_room.name}\n")
         return True
 
     def get_history(self) -> str:
@@ -66,6 +99,24 @@ class Player:
             return "\nAucun lieu visité pour l'instant.\n"
         history_descriptions = [f"- {room.description}" for room in self.history]
         return "\nVous avez déjà visité les pièces suivantes :\n" + "\n".join(history_descriptions) + "\n"
+
+    def get_total_weight(self) -> float:
+        """
+        Returns the total weight of items in the player's inventory.
+        """
+        return sum(item.weight for item in self.inventory.items)
+
+    def can_take_item(self, item: Item) -> bool:
+        """
+        Checks if the player can take the item without exceeding max_weight.
+
+        Args:
+            item (Item): The item to check.
+
+        Returns:
+            bool: True if the item can be taken, False otherwise.
+        """
+        return self.get_total_weight() + item.weight <= self.max_weight
 
     def add_item(self, item: Item) -> None:
         """
@@ -104,21 +155,3 @@ class Player:
             bool: True if the inventory is empty, False otherwise.
         """
         return self.inventory.is_empty()
- 
-    def get_total_weight(self) -> float:
-        """
-        Returns the total weight of items in the player's inventory.
-        """
-        return sum(item.weight for item in self.inventory.items)
-
-    def can_take_item(self, item: Item) -> bool:
-        """
-        Checks if the player can take the item without exceeding max_weight.
-
-        Args:
-            item (Item): The item to check.
-
-        Returns:
-            bool: True if the item can be taken, False otherwise.
-        """
-        return self.get_total_weight() + item.weight <= self.max_weight

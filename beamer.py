@@ -1,6 +1,5 @@
 from item import Item
 from room import Room
-from player import Player
 
 
 class Beamer(Item):
@@ -31,18 +30,4 @@ class Beamer(Item):
             room (Room): The room to charge the Beamer with.
         """
         self.charged_room = room
-        print(f"The Beamer '{self.name}' has been charged with the room '{room.name}'.")
-
-    def use(self, player: Player) -> None:
-        """
-        Uses the Beamer to teleport the player to the charged room.
-
-        Args:
-            player (Player): The player using the Beamer.
-        """
-        if self.charged_room:
-            player.current_room = self.charged_room
-            print(f"You have been teleported to '{self.charged_room.name}'.")
-            self.charged_room = None  # Reset the charge after use
-        else:
-            print("The Beamer is not charged.")
+        print(f"\nLe Beamer '{self.name}' est chargé avec la pièce '{room.name}'.\n")
