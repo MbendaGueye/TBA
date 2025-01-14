@@ -1,23 +1,34 @@
+"""
+Module contenant la classe Door, qui représente une porte dans le jeu.
+
+La classe Door permet de gérer l'état d'une porte (verrouillée ou déverrouillée)
+et fournit des méthodes pour interagir avec elle.
+"""
+
+
 class Door:
     """
-    Represents a door that can be locked or unlocked.
+    Représente une porte qui peut être verrouillée ou déverrouillée.
+
+    Attributs:
+        locked (bool): Indique si la porte est verrouillée.
     """
 
-    def __init__(self, locked=True):
+    def __init__(self, locked: bool = True):
         """
-        Initializes the Door instance.
+        Initialise une instance de Door.
 
         Args:
-            locked (bool): Whether the door is locked.
+            locked (bool): Indique si la porte est verrouillée au départ. Par défaut, True.
         """
         self.locked = locked
 
     def unlock(self, key_name: str) -> None:
         """
-        Unlocks the door with the correct key.
+        Déverrouille la porte avec la clé correcte.
 
         Args:
-            key_name (str): The name of the key used.
+            key_name (str): Le nom de la clé utilisée.
         """
         if key_name == "key":
             self.locked = False
@@ -27,9 +38,9 @@ class Door:
 
     def is_locked(self) -> bool:
         """
-        Checks if the door is locked.
+        Vérifie si la porte est verrouillée.
 
         Returns:
-            bool: True if the door is locked, False otherwise.
+            bool: True si la porte est verrouillée, sinon False.
         """
         return self.locked

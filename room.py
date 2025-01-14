@@ -1,3 +1,6 @@
+"""
+Module contenant la classe Room pour représenter les pièces du jeu.
+"""
 from inventory import Inventory
 from door import Door
 from character import Character
@@ -5,52 +8,53 @@ from character import Character
 
 class Room:
     """
-    Represents a room in the game.
+    Représente une pièce dans le jeu.
     """
 
     VALID_DIRECTIONS = {"N", "E", "S", "O", "U", "D"}
 
-    def __init__(self, name: str, description: str, dark=False):
+    def __init__(self, name: str, description: str, dark: bool = False):
         """
-        Initializes the room.
+        Initialise une pièce.
 
         Args:
-            name (str): The name of the room.
-            description (str): A description of the room.
-            dark (bool): Indicates if the room is dark. Default is False.
+            name (str): Le nom de la pièce.
+            description (str): Une description de la pièce.
+            dark (bool): Indique si la pièce est sombre. Par défaut, False.
         """
         self.name: str = name
         self.description: str = description
         self.exits: dict[str, "Room"] = {}
         self.inventory = Inventory()
         self.dark = dark
-        self.door: Door | None = None  # Optional door to restrict access
-        self.characters: list[Character] = []  # List of characters in the room
+        self.door: Door | None = None  # Porte optionnelle pour restreindre l'accès
+        self.characters: list[Character] = []  # Liste des personnages dans la pièce
 
     def is_dark(self) -> bool:
         """
-        Checks if the room is dark.
+        Vérifie si la pièce est sombre.
 
         Returns:
-            bool: True if the room is dark, False otherwise.
+            bool: True si la pièce est sombre, False sinon.
         """
         return self.dark
 
     def get_exit_string(self) -> str:
         """
-        Returns a string describing the exits available in the room.
+        Retourne une chaîne décrivant les sorties disponibles.
 
         Returns:
-            str: A formatted string listing the exits.
+            str: Une chaîne formatée listant les sorties.
         """
         return "Sorties: " + ", ".join(self.exits.keys())
 
     def get_long_description(self) -> str:
         """
-        Returns a detailed description of the room, including exits, inventory, and characters.
+        Retourne une description détaillée de la pièce, incluant les sorties,
+        l'inventaire et les personnages.
 
         Returns:
-            str: A detailed description of the room.
+            str: Une description détaillée de la pièce.
         """
         if self.door and self.door.is_locked():
             return "La porte vers cette pièce est verrouillée.\n"
@@ -65,17 +69,6 @@ class Room:
 
     def look(self) -> None:
         """
-        Displays the description of the room and its contents.
+        Affiche la description de la pièce et de son contenu.
         """
         print(self.get_long_description())
-
-    def find_character_by_name(self, name: str) -> Character | None:
-        """
-        Finds a character in the room by their name or synonyms.
-
-        Args:
-            name (str): The name or synonym of the character.
-
-        Returns:
-            Character | None: The character if found, None otherwise.
-        """

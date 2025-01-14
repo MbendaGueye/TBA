@@ -1,7 +1,10 @@
+"""
+Contains all the actions and commands available in the game.
+"""
+
 from __future__ import annotations
-from beamer import Beamer
-from room import Room
 from typing import TYPE_CHECKING
+from beamer import Beamer
 
 if TYPE_CHECKING:
     from game import Game
@@ -29,7 +32,8 @@ class Actions:
         direction = list_of_words[1]
         normalized_direction = player.DIRECTIONS.get(direction.upper())
         if not normalized_direction:
-            print(f"\n'{direction}' n'est pas une direction valide. Essayez N, E, S, O, U ou D.\n")
+            print(f"\n'{direction}' n'est pas une direction valide. "
+                  "Essayez N, E, S, O, U ou D.\n")
             return False
 
         if not player.move(normalized_direction):
@@ -39,7 +43,7 @@ class Actions:
         return True
 
     @staticmethod
-    def quit(game: Game, list_of_words: list[str], number_of_parameters: int) -> bool:
+    def quit(game: Game, *_) -> bool:
         """
         Quits the game.
         """
@@ -48,7 +52,7 @@ class Actions:
         return True
 
     @staticmethod
-    def help(game: Game, list_of_words: list[str], number_of_parameters: int) -> bool:
+    def help(game: Game, *_) -> bool:
         """
         Displays the list of available commands.
         """
@@ -59,7 +63,7 @@ class Actions:
         return True
 
     @staticmethod
-    def history(game: Game, list_of_words: list[str], number_of_parameters: int) -> bool:
+    def history(game: Game, *_) -> bool:
         """
         Displays the player's movement history.
         """
@@ -68,7 +72,7 @@ class Actions:
         return True
 
     @staticmethod
-    def back(game: Game, list_of_words: list[str], number_of_parameters: int) -> bool:
+    def back(game: Game, *_) -> bool:
         """
         Moves the player back to the previous room, if possible.
         """
@@ -83,7 +87,7 @@ class Actions:
         return True
 
     @staticmethod
-    def look(game: Game, list_of_words: list[str], number_of_parameters: int) -> bool:
+    def look(game: Game, *_) -> bool:
         """
         Displays the description of the current room and its inventory.
         """
@@ -92,7 +96,7 @@ class Actions:
         return True
 
     @staticmethod
-    def check(game: Game, list_of_words: list[str], number_of_parameters: int) -> bool:
+    def check(game: Game, *_) -> bool:
         """
         Displays the player's inventory.
         """
@@ -105,6 +109,10 @@ class Actions:
         """
         Takes an item from the room and adds it to the player's inventory.
         """
+        if len(list_of_words) != number_of_parameters + 1:
+            print(MSG1.format(command_word="take"))
+            return False
+
         player = game.player
         item_name = list_of_words[1]
         item = player.current_room.inventory.get_item_by_name(item_name)
@@ -114,7 +122,8 @@ class Actions:
             return False
 
         if not player.can_take_item(item):
-            print(f"\nVous ne pouvez pas prendre '{item_name}'. Le poids maximum serait dépassé.\n")
+            print(f"\nVous ne pouvez pas prendre '{item_name}'. "
+                  "Le poids maximum serait dépassé.\n")
             return False
 
         player.add_item(item)
@@ -127,6 +136,10 @@ class Actions:
         """
         Drops an item from the player's inventory into the current room.
         """
+        if len(list_of_words) != number_of_parameters + 1:
+            print(MSG1.format(command_word="drop"))
+            return False
+
         player = game.player
         item_name = list_of_words[1]
         item = player.inventory.get_item_by_name(item_name)
@@ -145,11 +158,11 @@ class Actions:
         """
         Charges a Beamer with the current room.
         """
-        player = game.player
         if len(list_of_words) != number_of_parameters + 1:
-            print("\nUsage: charge <item_name>\n")
+            print(MSG1.format(command_word="charge"))
             return False
 
+        player = game.player
         item_name = list_of_words[1]
         beamer = player.inventory.get_item_by_name(item_name)
 
@@ -158,6 +171,8 @@ class Actions:
             return False
 
         beamer.charge(player.current_room)
+        print(f"\nVous avez chargé le Beamer avec la pièce actuelle : "
+              f"{player.current_room.name}.\n")
         return True
 
     @staticmethod
@@ -166,7 +181,7 @@ class Actions:
         Uses an item in the player's inventory.
         """
         if len(list_of_words) != number_of_parameters + 1:
-            print("\nUsage: use <item_name>\n")
+            print(MSG1.format(command_word="use"))
             return False
 
         item_name = list_of_words[1].lower()
@@ -210,6 +225,10 @@ class Actions:
         """
         Interacts with a character in the current room.
         """
+        if len(list_of_words) != number_of_parameters + 1:
+            print(MSG1.format(command_word="talk"))
+            return False
+
         player = game.player
         char_name = list_of_words[1].lower()
         current_room = player.current_room

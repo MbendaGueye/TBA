@@ -1,21 +1,26 @@
+"""
+Module contenant la classe Item, qui représente un objet dans le jeu.
+"""
+
+
 class Item:
     """
-    Represents an item that can be found and used by the player in the game.
+    Représente un objet que le joueur peut trouver et utiliser dans le jeu.
 
-    Attributes:
-        name (str): The name of the item.
-        description (str): A detailed description of the item.
-        weight (float): The weight of the item in kilograms.
+    Attributs:
+        name (str): Le nom de l'objet.
+        description (str): Une description détaillée de l'objet.
+        weight (float): Le poids de l'objet en kilogrammes.
     """
 
     def __init__(self, name: str, description: str, weight: float):
         """
-        Initializes an Item instance.
+        Initialise une instance de Item.
 
         Args:
-            name (str): The name of the item.
-            description (str): The description of the item.
-            weight (float): The weight of the item.
+            name (str): Le nom de l'objet.
+            description (str): La description de l'objet.
+            weight (float): Le poids de l'objet.
         """
         self.name = name
         self.description = description
@@ -23,9 +28,9 @@ class Item:
 
     def __str__(self) -> str:
         """
-        Returns a string representation of the item.
+        Retourne une représentation sous forme de chaîne de l'objet.
 
         Returns:
-            str: A formatted string describing the item.
+            str: Une chaîne formatée décrivant l'objet.
         """
         return f"{self.name} : {self.description} ({self.weight} kg)"

@@ -1,33 +1,40 @@
+"""
+Module contenant la classe Beamer, un objet magique permettant la téléportation.
+
+La classe Beamer hérite de la classe Item et ajoute des fonctionnalités
+spécifiques pour charger une pièce et permettre la téléportation.
+"""
+
 from item import Item
 from room import Room
 
 
 class Beamer(Item):
     """
-    A magical item that allows teleportation to a previously visited room.
+    Un objet magique qui permet la téléportation vers une pièce visitée précédemment.
 
-    Attributes:
-        charged_room (Room | None): The room where the Beamer is charged.
+    Attributs:
+        charged_room (Room | None): La pièce où le Beamer est chargé.
     """
 
     def __init__(self, name: str, description: str, weight: float):
         """
-        Initializes the Beamer.
+        Initialise une instance de Beamer.
 
         Args:
-            name (str): The name of the Beamer.
-            description (str): A description of the Beamer.
-            weight (float): The weight of the Beamer.
+            name (str): Le nom du Beamer.
+            description (str): Une description du Beamer.
+            weight (float): Le poids du Beamer.
         """
         super().__init__(name, description, weight)
         self.charged_room: Room | None = None
 
     def charge(self, room: Room) -> None:
         """
-        Charges the Beamer with a specific room.
+        Charge le Beamer avec une pièce spécifique.
 
         Args:
-            room (Room): The room to charge the Beamer with.
+            room (Room): La pièce à associer au Beamer.
         """
         self.charged_room = room
         print(f"\nLe Beamer '{self.name}' est chargé avec la pièce '{room.name}'.\n")

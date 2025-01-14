@@ -1,3 +1,7 @@
+"""
+Module contenant la classe Player, représentant le joueur dans le jeu.
+"""
+
 from base_character import BaseCharacter
 from inventory import Inventory
 from room import Room
@@ -7,12 +11,12 @@ from beamer import Beamer
 
 class Player(BaseCharacter):
     """
-    Represents the player in the game.
+    Représente le joueur dans le jeu.
 
-    Attributes:
-        inventory (Inventory): The player's inventory.
-        max_weight (float): The maximum weight the player can carry.
-        history (list[Room]): The history of rooms visited by the player.
+    Attributs:
+        inventory (Inventory): L'inventaire du joueur.
+        max_weight (float): Le poids maximum que le joueur peut transporter.
+        history (list[Room]): L'historique des pièces visitées par le joueur.
     """
 
     DIRECTIONS = {
@@ -26,11 +30,11 @@ class Player(BaseCharacter):
 
     def __init__(self, name: str, max_weight: float = 10.0):
         """
-        Initializes the Player instance.
+        Initialise une instance de Player.
 
         Args:
-            name (str): The name of the player.
-            max_weight (float): The maximum weight the player can carry.
+            name (str): Le nom du joueur.
+            max_weight (float): Le poids maximum que le joueur peut transporter.
         """
         super().__init__(name, "Un aventurier courageux.")
         self.inventory = Inventory()
@@ -39,18 +43,19 @@ class Player(BaseCharacter):
 
     def move(self, direction: str) -> bool:
         """
-        Moves the player to a new room if possible.
+        Déplace le joueur vers une nouvelle pièce si possible.
 
         Args:
-            direction (str): The direction to move in.
+            direction (str): La direction du déplacement.
 
         Returns:
-            bool: True if the move was successful, False otherwise.
+            bool: True si le déplacement a réussi, False sinon.
         """
         normalized_direction = self.DIRECTIONS.get(direction.upper())
         if not normalized_direction:
             print(f"\n'{direction}' n'est pas une direction valide.\n")
             return False
+
         next_room = self.current_room.exits.get(normalized_direction)
         if not next_room:
             print("\nAucune porte dans cette direction !\n")
@@ -67,10 +72,10 @@ class Player(BaseCharacter):
 
     def use_beamer(self) -> bool:
         """
-        Uses a Beamer to teleport the player to the previous room.
+        Utilise un Beamer pour téléporter le joueur à la pièce précédente.
 
         Returns:
-            bool: True if the teleportation was successful, False otherwise.
+            bool: True si la téléportation a réussi, False sinon.
         """
         beamer = next(
             (item for item in self.inventory.items if isinstance(item, Beamer)),
@@ -90,68 +95,76 @@ class Player(BaseCharacter):
 
     def get_history(self) -> str:
         """
-        Returns the player's movement history.
+        Retourne l'historique des déplacements du joueur.
 
         Returns:
-            str: A formatted string of the player's movement history.
+            str: Une chaîne formatée des déplacements du joueur.
         """
         if not self.history:
             return "\nAucun lieu visité pour l'instant.\n"
-        history_descriptions = [f"- {room.description}" for room in self.history]
-        return "\nVous avez déjà visité les pièces suivantes :\n" + "\n".join(history_descriptions) + "\n"
+        history_descriptions = [
+            f"- {room.description}" for room in self.history
+        ]
+        return (
+            "\nVous avez déjà visité les pièces suivantes :\n" +
+            "\n".join(history_descriptions) + "\n"
+        )
 
     def get_total_weight(self) -> float:
         """
-        Returns the total weight of items in the player's inventory.
+        Retourne le poids total des objets dans l'inventaire du joueur.
+
+        Returns:
+            float: Le poids total des objets.
         """
         return sum(item.weight for item in self.inventory.items)
 
     def can_take_item(self, item: Item) -> bool:
         """
-        Checks if the player can take the item without exceeding max_weight.
+        Vérifie si le joueur peut prendre un objet sans dépasser le poids maximal.
 
         Args:
-            item (Item): The item to check.
+            item (Item): L'objet à vérifier.
 
         Returns:
-            bool: True if the item can be taken, False otherwise.
+            bool: True si l'objet peut être pris, False sinon.
         """
         return self.get_total_weight() + item.weight <= self.max_weight
 
     def add_item(self, item: Item) -> None:
         """
-        Adds an item to the player's inventory.
+        Ajoute un objet à l'inventaire du joueur.
 
         Args:
-            item (Item): The item to add.
+            item (Item): L'objet à ajouter.
         """
         self.inventory.add_item(item)
         print(f"\n{item.name} a été ajouté à votre inventaire.\n")
 
     def remove_item(self, item: Item) -> None:
         """
-        Removes an item from the player's inventory.
+        Retire un objet de l'inventaire du joueur.
 
         Args:
-            item (Item): The item to remove.
+            item (Item): L'objet à retirer.
         """
         self.inventory.remove_item(item)
         print(f"\n{item.name} a été retiré de votre inventaire.\n")
 
     def get_inventory(self) -> str:
         """
-        Returns the player's inventory as a string.
+        Retourne l'inventaire du joueur sous forme de chaîne.
 
         Returns:
-            str: A string representation of the inventory.
+            str: Une représentation textuelle de l'inventaire.
         """
         return self.inventory.get_inventory()
 
     def is_inventory_empty(self) -> bool:
         """
-        Checks if the player's inventory is empty.
+        Vérifie si l'inventaire du joueur est vide.
 
         Returns:
-            bool: True if the inventory is empty, False otherwise.
+            bool: True si l'inventaire est vide, False sinon.
         """
         return self.inventory.is_empty()

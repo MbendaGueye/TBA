@@ -1,25 +1,43 @@
+"""
+Module contenant la classe Character, représentant un personnage non-joueur (NPC) dans le jeu.
+"""
+
+from typing import TYPE_CHECKING, List
+
+if TYPE_CHECKING:
+    from room import Room
+    from game import Game
+
+
 class Character:
     """
-    Represents a non-player character (NPC) in the game.
+    Représente un personnage non-joueur (NPC) dans le jeu.
 
     Attributes:
-        name (str): The name of the character.
-        description (str): A description of the character.
-        current_room (Room): The room where the character is located.
-        messages (list[str]): Messages the character says when interacted with.
-        synonyms (list[str]): Synonyms or alternative names for the character.
+        name (str): Le nom du personnage.
+        description (str): Une description du personnage.
+        current_room (Room): La pièce où se trouve le personnage.
+        messages (List[str]): Messages que le personnage dit lorsqu'il est interagi.
+        synonyms (List[str]): Synonymes ou noms alternatifs pour le personnage.
     """
 
-    def __init__(self, name: str, description: str, current_room: "Room", messages: list[str] = None, synonyms: list[str] = None):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        current_room: "Room",
+        messages: List[str] = None,
+        synonyms: List[str] = None
+    ):
         """
-        Initializes a Character instance.
+        Initialise une instance de Character.
 
         Args:
-            name (str): The name of the character.
-            description (str): A description of the character.
-            current_room (Room): The room where the character is located.
-            messages (list[str], optional): The messages the character says. Defaults to None.
-            synonyms (list[str], optional): Synonyms for the character's name. Defaults to None.
+            name (str): Le nom du personnage.
+            description (str): Une description du personnage.
+            current_room (Room): La pièce où se trouve le personnage.
+            messages (List[str], optional): Les messages que le personnage dit. Par défaut, None.
+            synonyms (List[str], optional): Synonymes pour le nom du personnage. Par défaut, None.
         """
         self.name = name
         self.description = description
@@ -29,20 +47,20 @@ class Character:
 
     def talk(self, game: "Game") -> str:
         """
-        Defines the behavior when interacting with the character.
+        Définit le comportement lors de l'interaction avec le personnage.
 
-        For specific characters like "Monstre BOUBOU", this method implements custom logic.
+        Implémente une logique spécifique pour des personnages comme "Monstre BOUBOU".
 
         Args:
-            game (Game): The current game instance.
+            game (Game): L'instance actuelle du jeu.
 
         Returns:
-            str: The message the character says.
+            str: Le message que dit le personnage.
         """
         player = game.player
 
         if self.name.lower() == "monstre boubou":
-            # Custom logic for the monster
+            # Logique personnalisée pour le monstre
             if not player.inventory.get_item_by_name("sword"):
                 game.finished = True
                 return "Le monstre vous a attaqué et tué ! VOUS AVEZ PERDU."
@@ -54,22 +72,24 @@ class Character:
 
     def matches_name(self, input_name: str) -> bool:
         """
-        Checks if the input name matches the character's name or its synonyms.
+        Vérifie si le nom donné correspond au nom du personnage ou à ses synonymes.
 
         Args:
-            input_name (str): The name to check.
+            input_name (str): Le nom à vérifier.
 
         Returns:
-            bool: True if it matches, False otherwise.
+            bool: True si le nom correspond, sinon False.
         """
         input_name = input_name.lower()
-        return input_name == self.name.lower() or input_name in (syn.lower() for syn in self.synonyms)
+        return input_name == self.name.lower() or input_name in (
+            syn.lower() for syn in self.synonyms
+        )
 
     def __str__(self) -> str:
         """
-        Returns a string representation of the character.
+        Retourne une représentation textuelle du personnage.
 
         Returns:
-            str: The name and description of the character.
+            str: Le nom et la description du personnage.
         """
         return f"{self.name} : {self.description}"

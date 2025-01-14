@@ -1,35 +1,39 @@
+"""
+Module contenant la classe Inventory, qui représente un inventaire pour stocker des objets dans le jeu.
+"""
+
 from item import Item
 
 
 class Inventory:
     """
-    Represents an inventory that can hold items.
+    Représente un inventaire pouvant contenir des objets.
 
-    Attributes:
-        items (set): A set containing the items in the inventory.
+    Attributs:
+        items (set): Un ensemble contenant les objets présents dans l'inventaire.
     """
 
     def __init__(self):
         """
-        Initializes an empty inventory.
+        Initialise un inventaire vide.
         """
         self.items = set()
 
     def add_item(self, item: Item) -> None:
         """
-        Adds an item to the inventory.
+        Ajoute un objet à l'inventaire.
 
         Args:
-            item (Item): The item to add.
+            item (Item): L'objet à ajouter.
         """
         self.items.add(item)
 
     def remove_item(self, item: Item) -> None:
         """
-        Removes an item from the inventory.
+        Retire un objet de l'inventaire.
 
         Args:
-            item (Item): The item to remove.
+            item (Item): L'objet à retirer.
         """
         if item in self.items:
             self.items.remove(item)
@@ -38,10 +42,10 @@ class Inventory:
 
     def get_inventory(self) -> str:
         """
-        Returns a string representation of the inventory.
+        Retourne une représentation sous forme de chaîne de l'inventaire.
 
         Returns:
-            str: A formatted string listing the items in the inventory.
+            str: Une chaîne formatée listant les objets dans l'inventaire.
         """
         if not self.items:
             return "L'inventaire est vide."
@@ -54,23 +58,22 @@ class Inventory:
 
     def is_empty(self) -> bool:
         """
-        Checks if the inventory is empty.
+        Vérifie si l'inventaire est vide.
 
         Returns:
-            bool: True if the inventory is empty, False otherwise.
+            bool: True si l'inventaire est vide, False sinon.
         """
         return len(self.items) == 0
-    
 
     def get_item_by_name(self, name: str) -> Item | None:
         """
-        Finds an item in the inventory by its name.
+        Trouve un objet dans l'inventaire en fonction de son nom.
 
         Args:
-            name (str): The name of the item.
+            name (str): Le nom de l'objet à chercher.
 
         Returns:
-            Item | None: The item if found, None otherwise.
+            Item | None: L'objet correspondant si trouvé, None sinon.
         """
         for item in self.items:
             if item.name == name:
