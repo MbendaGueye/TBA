@@ -51,6 +51,7 @@ Votre but est de :
 
 ## Carte du jeu:
 
+![image alt ](https://github.com/MbendaGueye/TBA/blob/11379d38636b26cc1fc8a443648f53974a0e5b0e/map%20jeu%20TBA.png)
 
 
 
