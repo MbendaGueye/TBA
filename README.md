@@ -8,7 +8,7 @@
 
 Ce jeu d'aventure textuel a pour objectif de vous immerger dans une quête captivante : sauver une princesse enfermée dans un donjon verrouillé. Attention, un monstre redoutable rôde dans le château où se trouve le donjon, et il faudra le vaincre pour accomplir votre mission.
 
-### Scénario
+### Scénario et Conditions
 
 - La princesse est enfermée dans un donjon verrouillé.
 - Une clé rouillée est cachée dans une forêt enchantée pour déverrouiller le donjon.
@@ -18,7 +18,20 @@ Votre but est de :
 1. Explorer les différentes pièces.  
 2. Trouver les objets nécessaires (clé et épée).  
 3. Vaincre le monstre.  
-4. Sauver la princesse.  
+4. Sauver la princesse.
+
+
+### exemple de parcours gagnant:
+![image alt](https://github.com/MbendaGueye/TBA/blob/bf20d093f40c61664e7f411cb3bac842b7d1f918/g1.png)
+
+- Suite:
+  ![image_alt](https://github.com/MbendaGueye/TBA/blob/bf20d093f40c61664e7f411cb3bac842b7d1f918/g2.png)
+
+
+
+### parcours perdant:
+![image_alt](https://github.com/MbendaGueye/TBA/blob/bf20d093f40c61664e7f411cb3bac842b7d1f918/p1.png)
+
 
 ---
 
