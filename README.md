@@ -10,6 +10,7 @@ Ce jeu d'aventure textuel a pour objectif de vous immerger dans une quête capti
 
 ### Scénario et Conditions
 
+- A l'etat initial le joueur se trouve dans les marecages (swamp)
 - La princesse est enfermée dans un donjon verrouillé.
 - Une clé rouillée est cachée dans une forêt enchantée pour déverrouiller le donjon.
 - Un monstre terrifiant se trouve dans le château et doit être vaincu à l'aide d'une épée cachée dans une salle lumineuse.
